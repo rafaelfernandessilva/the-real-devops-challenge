@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:5.0.6
+    restart: always
+    hostname: mongo
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - 27017:27017
+    networks:
+      - restaurante_app
+
+  app-python:
+    hostname: app-python
+    container_name: app-python
+    build: .
+    ports: 
+      - 8080:8080
+    depends_on:
+      - mongo
+    networks:
+      - restaurante_app
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/resturante
+
+
+networks:
+  restaurante_app:
+  
